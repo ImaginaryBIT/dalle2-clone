@@ -16,3 +16,8 @@ const RootLayout = ({children}: Props) => {
 };
 
 export default RootLayout;
+
+export const metadata = {
+  title: 'DALL·E 2 Image Generator',
+  description: 'DALL·E 2 Image Generator',
+};

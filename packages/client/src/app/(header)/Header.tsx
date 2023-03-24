@@ -12,7 +12,7 @@ const Header = () => {
           alt="openai"
         />
         <div>
-          <h1 className="font-bold">DALL·E 2 Image Generator</h1>
+          <h1 className="font-bold text-violet-500">DALL·E 2 Clone</h1>
           <h2 className="text-xs">
             Powered by DALL·E 2, ChatGPT & Microsoft Azure
           </h2>

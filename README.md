@@ -1,1 +1,1 @@
-# dalle2-image-generator
+# dalle2-clone

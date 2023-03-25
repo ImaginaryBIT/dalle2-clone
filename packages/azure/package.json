@@ -13,6 +13,9 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0-alpha.7",
+    "@azure/storage-blob": "^12.13.0",
+    "axios": "^1.3.4",
+    "joi": "^17.9.1",
     "openai": "^3.2.1"
   },
   "devDependencies": {
@@ -28,5 +31,5 @@
     "prettier": "^2.8.7",
     "typescript": "^4.9.5"
   },
-  "main": "dist/src/features/**/*.js"
+  "main": "dist/features/**/*.js"
 }

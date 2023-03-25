@@ -7,7 +7,7 @@ const suggestionsApi = api.injectEndpoints({
     suggestionsGet: builder.query<SuggestionsGetResult, void>({
       queryFn: async (_arg, _queryApi, _extraOptions, baseQuery) => {
         const result = await baseQuery({
-          url: process.env.NEXT_PUBLIC_SUGGESTIONS_GET_API_URL,
+          url: '/suggestionsGet',
           method: 'GET',
         });
         return result as ApiResult<SuggestionsGetResult>;

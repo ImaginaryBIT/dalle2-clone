@@ -4,12 +4,12 @@ import {useSuggestionsGetQuery} from '@features/suggestions/suggestions-api';
 import {useCallback, useMemo, useState} from 'react';
 
 const GeneratorPrompt = () => {
-  const {data, isLoading} = useSuggestionsGetQuery();
+  const {data, isLoading, isFetching, refetch} = useSuggestionsGetQuery();
 
   const [input, setInput] = useState('');
 
-  const placeholder = useMemo(() => {
-    if (isLoading) {
+  const placeholder: string = useMemo(() => {
+    if (isLoading || isFetching) {
       return 'Loading a suggestion...';
     }
 
@@ -18,11 +18,19 @@ const GeneratorPrompt = () => {
     }
 
     return 'Enter a prompt';
-  }, [data?.suggestion, isLoading]);
+  }, [data?.suggestion, isLoading, isFetching]);
 
-  const isGenerateDisabled = useMemo(() => {
+  const isGenerateDisabled: boolean = useMemo(() => {
     return input.length === 0;
   }, [input.length]);
+
+  const onNewSuggestionHandler = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      await refetch();
+    },
+    [refetch],
+  );
 
   const onChangeInputHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,10 +63,17 @@ const GeneratorPrompt = () => {
           type="button">
           Use Suggestion
         </button>
-        <button className="p-4 bg-white text-violet-500 border-none transition-colors duration-200 rounded-b-md md:rounded-r-md md:rounded-bl-none font-bold">
+        <button
+          className="p-4 bg-white text-violet-500 border-none transition-colors duration-200 rounded-b-md md:rounded-r-md md:rounded-bl-none font-bold"
+          onClick={onNewSuggestionHandler}>
           New Suggestion
         </button>
       </form>
+      {!isGenerateDisabled && (
+        <p className="italic pt-2 pl-2 font-light">
+          Suggestion: <span className="text-violet-500">{placeholder}</span>
+        </p>
+      )}
     </div>
   );
 };

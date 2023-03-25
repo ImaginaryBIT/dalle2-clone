@@ -6,3 +6,11 @@ cd packages
 # Azure
 cd azure
 pnpm lint-staged
+cd ..
+
+# Client
+cd client
+pnpm lint-staged
+cd ..
+
+cd ..

@@ -13,4 +13,10 @@ cd client
 pnpm lint-staged
 cd ..
 
+# Terraform
+cd terraform
+terraform fmt
+terraform validate
+cd ..
+
 cd ..

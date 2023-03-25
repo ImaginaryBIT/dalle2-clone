@@ -9,7 +9,12 @@ export const suggestionsGetRepository = async (): Promise<string> => {
       max_tokens: 100,
       temperature: 0.8,
     });
-    return response.data.choices[0].text;
+    const text = response.data.choices[0].text;
+
+    if (typeof text !== 'string') {
+      return 'Error: No text returned from OpenAI';
+    }
+    return text;
   } catch (error) {
     return JSON.stringify(error);
   }

@@ -6,7 +6,10 @@
     "build": "tsc",
     "watch": "tsc -w",
     "prestart": "pnpm run build",
-    "start": "func start"
+    "start": "func start",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write .",
+    "tsc": "tsc --pretty --noEmit"
   },
   "dependencies": {
     "@azure/functions": "^4.0.0-alpha.7",
@@ -14,7 +17,16 @@
   },
   "devDependencies": {
     "@types/node": "^18.x",
-    "typescript": "^4.0.0"
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "eslint": "^8.0.1",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "lint-staged": "^13.2.0",
+    "prettier": "^2.8.7",
+    "typescript": "^4.9.5"
   },
   "main": "dist/src/features/**/*.js"
 }

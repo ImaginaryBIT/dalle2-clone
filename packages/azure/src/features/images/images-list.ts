@@ -9,9 +9,6 @@ export const imagesList = async (): Promise<HttpResponseInit> => {
     jsonBody: {
       images,
     },
-    headers: {
-      'Access-Control-Allow-Origin': process.env.CLIENT_URL,
-    },
     status: 200,
   };
 };

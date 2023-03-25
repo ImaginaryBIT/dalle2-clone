@@ -9,9 +9,6 @@ export const suggestionsGenerate = async (): Promise<HttpResponseInit> => {
     jsonBody: {
       suggestion: result,
     },
-    headers: {
-      'Access-Control-Allow-Origin': process.env.CLIENT_URL,
-    },
     status: 200,
   };
 };

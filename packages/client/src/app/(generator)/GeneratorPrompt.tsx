@@ -1,11 +1,14 @@
 'use client';
 
+import {useImagesGenerateMutation} from '@features/images/images-api';
 import {useLazySuggestionsGenerateQuery} from '@features/suggestions/suggestions-api';
 import {useCallback, useMemo, useState} from 'react';
 
 const GeneratorPrompt = () => {
   const [suggestionsGenerateQuery, {data, isLoading, isFetching}] =
     useLazySuggestionsGenerateQuery();
+
+  const [imagesGenerateMutation] = useImagesGenerateMutation();
 
   const [input, setInput] = useState('');
 
@@ -24,6 +27,35 @@ const GeneratorPrompt = () => {
   const isGenerateDisabled: boolean = useMemo(() => {
     return input.length === 0;
   }, [input.length]);
+
+  const isSuggestionVisible: boolean = useMemo(() => {
+    return (
+      input.length > 0 &&
+      (data?.suggestion || '').length > 0 &&
+      (data?.suggestion !== input || isLoading || isFetching)
+    );
+  }, [data?.suggestion, input, isLoading, isFetching]);
+
+  const onGenerateHandler = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      await imagesGenerateMutation({
+        prompt: input,
+      });
+      setInput('');
+    },
+    [input, imagesGenerateMutation],
+  );
+
+  const onUseSuggestionHandler = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.preventDefault();
+      if (data?.suggestion) {
+        setInput(data.suggestion);
+      }
+    },
+    [data?.suggestion, onGenerateHandler],
+  );
 
   const onNewSuggestionHandler = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -56,12 +88,13 @@ const GeneratorPrompt = () => {
               : 'bg-violet-500 text-white transition-colors duration-200'
           }`}
           disabled={isGenerateDisabled}
-          type="submit">
+          onClick={onGenerateHandler}>
           Generate
         </button>
         <button
           className="p-4 bg-violet-400 text-white transition-colors duration-200 font-bold disabled:text-gray-300 disabled:cursor-not-allowed disabled:bg-gray-400"
-          type="button">
+          type="button"
+          onClick={onUseSuggestionHandler}>
           Use Suggestion
         </button>
         <button
@@ -70,7 +103,7 @@ const GeneratorPrompt = () => {
           New Suggestion
         </button>
       </form>
-      {!isGenerateDisabled && (
+      {isSuggestionVisible && (
         <p className="italic pt-2 pl-2 font-light">
           Suggestion: <span className="text-violet-500">{placeholder}</span>
         </p>

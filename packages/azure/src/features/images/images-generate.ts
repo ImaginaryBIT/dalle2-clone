@@ -15,9 +15,6 @@ export const imagesGenerate = async (
       jsonBody: {
         error: 'Request body is required',
       },
-      headers: {
-        'Access-Control-Allow-Origin': process.env.CLIENT_URL,
-      },
       status: 400,
     };
   }
@@ -35,9 +32,6 @@ export const imagesGenerate = async (
       jsonBody: {
         error: error.message,
       },
-      headers: {
-        'Access-Control-Allow-Origin': process.env.CLIENT_URL,
-      },
       status: 400,
     };
   }
@@ -50,9 +44,6 @@ export const imagesGenerate = async (
     jsonBody: {
       url,
     },
-    headers: {
-      'Access-Control-Allow-Origin': process.env.CLIENT_URL,
-    },
     status: 200,
   };
 };
@@ -60,5 +51,6 @@ export const imagesGenerate = async (
 app.http('imagesGenerate', {
   methods: ['POST'],
   authLevel: 'anonymous',
+
   handler: imagesGenerate,
 });

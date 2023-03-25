@@ -2,7 +2,7 @@ import {api} from '@lib/api';
 
 const suggestionsApi = api.injectEndpoints({
   endpoints: builder => ({
-    suggestionsGet: builder.query({
+    suggestionsGet: builder.query<string, void>({
       query: () => ({
         url: '/suggestions',
       }),

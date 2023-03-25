@@ -1,3 +1,4 @@
+import AppProvider from '@features/app/AppProvider';
 import StoreProvider from '@lib/store/StoreProvider';
 import '@lib/styles/globals.css';
 
@@ -9,7 +10,9 @@ const RootLayout = ({children}: Props) => {
   return (
     <html lang="en">
       <body>
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <AppProvider>{children}</AppProvider>
+        </StoreProvider>
       </body>
     </html>
   );

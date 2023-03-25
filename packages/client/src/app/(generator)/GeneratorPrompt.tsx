@@ -1,8 +1,14 @@
 'use client';
 
+import {suggestionsCurrentSelector} from '@features/suggestions/suggestions-state';
+import {useStoreSelector} from '@lib/store/store-hooks';
 import {useCallback, useMemo, useState} from 'react';
 
 const GeneratorPrompt = () => {
+  const suggestion = useStoreSelector(suggestionsCurrentSelector);
+
+  console.log(suggestion);
+
   const [input, setInput] = useState('');
 
   const isGenerateDisabled = useMemo(() => {
@@ -23,7 +29,7 @@ const GeneratorPrompt = () => {
           className="flex-1 p-4 outline-none rounded-md"
           value={input}
           onChange={onChangeInputHandler}
-          placeholder="Enter a prompt..."
+          placeholder={suggestion.data}
         />
         <button
           className={`p-4 font-bold ${

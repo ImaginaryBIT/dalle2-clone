@@ -1,9 +1,11 @@
 export const suggestionsGetRepository = async (): Promise<string> => {
-  const response = await fetch('...', {
-    cache: 'no-store',
-  });
-
-  const text = await response.text();
-
-  return text.trim();
+  try {
+    const response = await fetch(process.env.SUGGESTIONS_GET_API_URL, {
+      method: 'GET',
+    });
+    const text = await response.text();
+    return text.trim();
+  } catch (error) {
+    return JSON.stringify(error);
+  }
 };

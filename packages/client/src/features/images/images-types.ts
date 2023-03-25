@@ -10,3 +10,7 @@ export interface ImagesGenerateRequest {
 }
 
 export type ImagesGenerateResult = ImageModel;
+
+export interface ImagesListResult {
+  images: ImageModel[];
+}

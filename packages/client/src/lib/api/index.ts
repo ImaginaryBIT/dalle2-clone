@@ -6,4 +6,5 @@ export const api = createApi({
     baseUrl: process.env.NEXT_PUBLIC_API_URL + '/api',
   }),
   endpoints: () => ({}),
+  tagTypes: ['Image'],
 });

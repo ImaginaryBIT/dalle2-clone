@@ -4,45 +4,66 @@ import {useImagesGenerateMutation} from '@features/images/images-api';
 import {useLazySuggestionsGenerateQuery} from '@features/suggestions/suggestions-api';
 import {useCallback, useMemo, useState} from 'react';
 
-const GeneratorPrompt = () => {
-  const [suggestionsGenerateQuery, {data, isLoading, isFetching}] =
-    useLazySuggestionsGenerateQuery();
+const GalleryPrompt = () => {
+  const [
+    suggestionsGenerateQuery,
+    {
+      data: suggestion,
+      isLoading: isSuggestionLoading,
+      isFetching: isSuggestionFetching,
+    },
+  ] = useLazySuggestionsGenerateQuery();
 
   const [imagesGenerateMutation] = useImagesGenerateMutation();
 
   const [input, setInput] = useState('');
 
   const placeholder: string = useMemo(() => {
-    if (isLoading || isFetching) {
+    if (isSuggestionLoading || isSuggestionFetching) {
       return 'Loading a suggestion...';
     }
 
-    if (data?.suggestion) {
-      return data.suggestion;
+    if (suggestion?.suggestion) {
+      return suggestion.suggestion;
     }
 
     return 'Enter a prompt';
-  }, [data?.suggestion, isLoading, isFetching]);
+  }, [suggestion?.suggestion, isSuggestionLoading, isSuggestionFetching]);
 
   const isGenerateDisabled: boolean = useMemo(() => {
     return input.length === 0;
   }, [input.length]);
 
+  const isUseSuggestionDisabled: boolean = useMemo(() => {
+    return !suggestion?.suggestion || suggestion?.suggestion === input;
+  }, [suggestion?.suggestion, input]);
+
+  const isNewSuggestionDisabled: boolean = useMemo(() => {
+    return isSuggestionLoading || isSuggestionFetching;
+  }, [isSuggestionLoading, isSuggestionFetching]);
+
   const isSuggestionVisible: boolean = useMemo(() => {
     return (
       input.length > 0 &&
-      (data?.suggestion || '').length > 0 &&
-      (data?.suggestion !== input || isLoading || isFetching)
+      (suggestion?.suggestion || '').length > 0 &&
+      (suggestion?.suggestion !== input ||
+        isSuggestionLoading ||
+        isSuggestionFetching)
     );
-  }, [data?.suggestion, input, isLoading, isFetching]);
+  }, [
+    suggestion?.suggestion,
+    input,
+    isSuggestionLoading,
+    isSuggestionFetching,
+  ]);
 
   const onGenerateHandler = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
+      setInput('');
       await imagesGenerateMutation({
         prompt: input,
       });
-      setInput('');
     },
     [input, imagesGenerateMutation],
   );
@@ -50,11 +71,11 @@ const GeneratorPrompt = () => {
   const onUseSuggestionHandler = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
-      if (data?.suggestion) {
-        setInput(data.suggestion);
+      if (suggestion?.suggestion) {
+        setInput(suggestion.suggestion);
       }
     },
-    [data?.suggestion, onGenerateHandler],
+    [suggestion?.suggestion, onGenerateHandler],
   );
 
   const onNewSuggestionHandler = useCallback(
@@ -73,10 +94,10 @@ const GeneratorPrompt = () => {
   );
 
   return (
-    <div className="sm:m-10">
+    <div>
       <form className="flex flex-col lg:flex-row shadow-md shadow-slate-400/10 border rounded-md lg:divide-x">
         <input
-          className="flex-1 p-4 outline-none rounded-md"
+          className="flex-1 p-8 sm:p-4 outline-none rounded-md"
           value={input}
           onChange={onChangeInputHandler}
           placeholder={placeholder}
@@ -87,19 +108,21 @@ const GeneratorPrompt = () => {
               ? 'text-gray-300 cursor-not-allowed'
               : 'bg-violet-500 text-white transition-colors duration-200'
           }`}
-          disabled={isGenerateDisabled}
-          onClick={onGenerateHandler}>
+          onClick={onGenerateHandler}
+          disabled={isGenerateDisabled}>
           Generate
         </button>
         <button
           className="p-4 bg-violet-400 text-white transition-colors duration-200 font-bold disabled:text-gray-300 disabled:cursor-not-allowed disabled:bg-gray-400"
           type="button"
-          onClick={onUseSuggestionHandler}>
+          onClick={onUseSuggestionHandler}
+          disabled={isUseSuggestionDisabled}>
           Use Suggestion
         </button>
         <button
-          className="p-4 bg-white text-violet-500 border-none transition-colors duration-200 rounded-b-md md:rounded-r-md md:rounded-bl-none font-bold"
-          onClick={onNewSuggestionHandler}>
+          className="p-4 bg-white text-violet-500 border-none transition-colors duration-200 rounded-b-md md:rounded-r-md md:rounded-bl-none font-bold disabled:text-gray-400 disabled:cursor-not-allowed"
+          onClick={onNewSuggestionHandler}
+          disabled={isNewSuggestionDisabled}>
           New Suggestion
         </button>
       </form>
@@ -112,4 +135,4 @@ const GeneratorPrompt = () => {
   );
 };
 
-export default GeneratorPrompt;
+export default GalleryPrompt;

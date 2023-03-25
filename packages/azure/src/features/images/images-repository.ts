@@ -96,7 +96,7 @@ export const imagesListRepository = async (): Promise<ImageModel[]> => {
 
     return images.sort(
       (a, b) =>
-        new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
   } catch (_error) {
     return [];

@@ -14,7 +14,7 @@ const Header = () => {
         <div>
           <h1 className="font-bold text-violet-500">DALL·E 2 Clone</h1>
           <h2 className="text-xs">
-            Powered by DALL·E 2, ChatGPT & Microsoft Azure
+            Powered by DALL·E 2, Davinci-003 & Microsoft Azure
           </h2>
         </div>
       </section>

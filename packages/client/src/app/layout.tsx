@@ -1,5 +1,6 @@
 import StoreProvider from '@lib/store/StoreProvider';
 import '@lib/styles/globals.css';
+import ToastProvider from './(toast)/ToastProvider';
 
 interface Props {
   children: React.ReactNode;
@@ -9,7 +10,9 @@ const RootLayout = ({children}: Props) => {
   return (
     <html lang="en">
       <body>
-        <StoreProvider>{children}</StoreProvider>
+        <StoreProvider>
+          <ToastProvider>{children}</ToastProvider>
+        </StoreProvider>
       </body>
     </html>
   );

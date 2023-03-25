@@ -3,6 +3,7 @@
 import {useImagesGenerateMutation} from '@features/images/images-api';
 import {useLazySuggestionsGenerateQuery} from '@features/suggestions/suggestions-api';
 import {useCallback, useMemo, useState} from 'react';
+import {toast} from 'react-hot-toast';
 
 const GalleryPrompt = () => {
   const [
@@ -61,8 +62,15 @@ const GalleryPrompt = () => {
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
       setInput('');
+
+      const notification = toast.loading(`Creating: ${input.slice(0, 20)}...`);
+
       await imagesGenerateMutation({
         prompt: input,
+      });
+
+      toast.success(`Image successfuly created `, {
+        id: notification,
       });
     },
     [input, imagesGenerateMutation],

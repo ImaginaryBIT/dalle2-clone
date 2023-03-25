@@ -45,4 +45,8 @@ resource "azurerm_linux_function_app" "dalle2_clone_lfa" {
       node_version = "18"
     }
   }
+
+  app_settings = {
+    AzureWebJobsFeatureFlags = "EnableWorkerIndexing"
+  }
 }

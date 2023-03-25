@@ -1,15 +1,24 @@
 'use client';
 
-import {suggestionsCurrentSelector} from '@features/suggestions/suggestions-state';
-import {useStoreSelector} from '@lib/store/store-hooks';
+import {useSuggestionsGetQuery} from '@features/suggestions/suggestions-api';
 import {useCallback, useMemo, useState} from 'react';
 
 const GeneratorPrompt = () => {
-  const suggestion = useStoreSelector(suggestionsCurrentSelector);
-
-  console.log(suggestion);
+  const {data, isLoading} = useSuggestionsGetQuery();
 
   const [input, setInput] = useState('');
+
+  const placeholder = useMemo(() => {
+    if (isLoading) {
+      return 'Loading a suggestion...';
+    }
+
+    if (data?.suggestion) {
+      return data.suggestion;
+    }
+
+    return 'Enter a prompt';
+  }, [data?.suggestion, isLoading]);
 
   const isGenerateDisabled = useMemo(() => {
     return input.length === 0;
@@ -23,13 +32,13 @@ const GeneratorPrompt = () => {
   );
 
   return (
-    <div className="m-10">
+    <div className="sm:m-10">
       <form className="flex flex-col lg:flex-row shadow-md shadow-slate-400/10 border rounded-md lg:divide-x">
         <input
           className="flex-1 p-4 outline-none rounded-md"
           value={input}
           onChange={onChangeInputHandler}
-          placeholder={suggestion.data}
+          placeholder={placeholder}
         />
         <button
           className={`p-4 font-bold ${

@@ -14,7 +14,8 @@ export const suggestionsGetRepository = async (): Promise<string> => {
     if (typeof text !== 'string') {
       return 'Error: No text returned from OpenAI';
     }
-    return text;
+
+    return text.trim();
   } catch (error) {
     return JSON.stringify(error);
   }

@@ -1,21 +1,19 @@
 import {api} from '@lib/api';
 import {ApiResult} from '@lib/api/api-types';
-import {SuggestionsGetResult} from './suggestions-types';
+import {SuggestionsGenerateResult} from './suggestions-types';
 
 const suggestionsApi = api.injectEndpoints({
   endpoints: builder => ({
-    suggestionsGet: builder.query<SuggestionsGetResult, void>({
+    suggestionsGenerate: builder.query<SuggestionsGenerateResult, void>({
       queryFn: async (_arg, _queryApi, _extraOptions, baseQuery) => {
         const result = await baseQuery({
-          url: '/suggestionsGet',
+          url: '/suggestionsGenerate',
           method: 'GET',
         });
-        return result as ApiResult<SuggestionsGetResult>;
+        return result as ApiResult<SuggestionsGenerateResult>;
       },
     }),
   }),
 });
 
-export const {suggestionsGet} = suggestionsApi.endpoints;
-
-export const {useSuggestionsGetQuery} = suggestionsApi;
+export const {useLazySuggestionsGenerateQuery} = suggestionsApi;

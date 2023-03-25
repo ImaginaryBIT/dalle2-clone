@@ -1,3 +1,3 @@
-export interface SuggestionsGetResult {
+export interface SuggestionsGenerateResult {
   suggestion: string;
 }

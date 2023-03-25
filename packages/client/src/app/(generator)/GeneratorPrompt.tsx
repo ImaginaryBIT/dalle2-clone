@@ -1,10 +1,11 @@
 'use client';
 
-import {useSuggestionsGetQuery} from '@features/suggestions/suggestions-api';
+import {useLazySuggestionsGenerateQuery} from '@features/suggestions/suggestions-api';
 import {useCallback, useMemo, useState} from 'react';
 
 const GeneratorPrompt = () => {
-  const {data, isLoading, isFetching, refetch} = useSuggestionsGetQuery();
+  const [suggestionsGenerateQuery, {data, isLoading, isFetching}] =
+    useLazySuggestionsGenerateQuery();
 
   const [input, setInput] = useState('');
 
@@ -27,9 +28,9 @@ const GeneratorPrompt = () => {
   const onNewSuggestionHandler = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.preventDefault();
-      await refetch();
+      await suggestionsGenerateQuery();
     },
-    [refetch],
+    [suggestionsGenerateQuery],
   );
 
   const onChangeInputHandler = useCallback(

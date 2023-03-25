@@ -1,13 +1,13 @@
 import type {HttpResponseInit} from '@azure/functions';
 import {app} from '@azure/functions';
-import {suggestionsGetRepository} from './suggestions-repository';
+import {imagesListRepository} from './images-repository';
 
-export const suggestionsGet = async (): Promise<HttpResponseInit> => {
-  const result = await suggestionsGetRepository();
+export const imagesList = async (): Promise<HttpResponseInit> => {
+  const images = await imagesListRepository();
 
   return {
     jsonBody: {
-      suggestion: result,
+      images,
     },
     headers: {
       'Access-Control-Allow-Origin': process.env.CLIENT_URL,
@@ -16,8 +16,8 @@ export const suggestionsGet = async (): Promise<HttpResponseInit> => {
   };
 };
 
-app.http('suggestionsGet', {
+app.http('imagesList', {
   methods: ['GET'],
   authLevel: 'anonymous',
-  handler: suggestionsGet,
+  handler: imagesList,
 });

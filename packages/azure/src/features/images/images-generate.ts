@@ -1,7 +1,7 @@
 import type {HttpRequest, HttpResponseInit} from '@azure/functions';
 import {app} from '@azure/functions';
 import * as Joi from 'joi';
-import {imagesGenerateRepostiory} from './images-repository';
+import {imagesGenerateRepository} from './images-repository';
 
 export interface ImagesGenerateRequest {
   prompt: string;
@@ -44,7 +44,7 @@ export const imagesGenerate = async (
 
   const body: ImagesGenerateRequest = value;
 
-  const url = await imagesGenerateRepostiory(body);
+  const url = await imagesGenerateRepository(body);
 
   return {
     jsonBody: {
